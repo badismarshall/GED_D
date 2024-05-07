@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import { Button, buttonVariants } from '../ui/button'
+import { signOut } from '@/server/actions/userAuth'
 
 const NavBar = () => {
     const pathname = usePathname()
@@ -35,6 +36,7 @@ const NavBar = () => {
             </div>
         </div>
         <Button
+         onClick={() => signOut()}
         //   href="/"
           className={cn(
             buttonVariants({ variant: "ghost" }),

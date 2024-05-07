@@ -31,16 +31,16 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     // get form data
     
     // event.preventDefault()
-    // setIsLoading(true)
+    setIsLoading(true)
 
-    // setTimeout(() => {
-    //   setIsLoading(false)
-    // }, 3000)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
 
-    // const session = await signInWithEmail({
-    //   email: 'dz',
-    //   password: 'password'
-    // })
+    const session = signInWithEmail({
+      email: values.email,
+      password: values.password
+    })
   }
 
   return (
@@ -56,7 +56,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           render={({ field }) => (
             <FormItem className="grid gap-1">
               <FormLabel className="" htmlFor="email">
-                Nom d'utilisateur
+                Nom d'utilisateur or Email
               </FormLabel>
               <FormControl>
                 <Input

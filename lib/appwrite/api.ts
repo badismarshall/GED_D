@@ -6,11 +6,11 @@ import { appwriteConfig } from './config';
 import { cookies } from "next/headers";
 
 
-const createAdminClient = async () => {
+async function createAdminClient() {
     const client = new Client()
         .setEndpoint(appwriteConfig.url as string) // Your API Endpoint
         .setProject(appwriteConfig.projectId as string) // Your project ID
-        .setKey('YOUR_API_KEY'); // Your secret API key
+        .setKey(appwriteConfig.apiKey as string); // Your secret API key
 
     return {
         get account() {
@@ -19,7 +19,7 @@ const createAdminClient = async () => {
     };
 }
 
-const createSessionClient = async () => {
+async function createSessionClient() {
     const client = new Client()
     .setEndpoint(appwriteConfig.url as string) // Your API Endpoint
     .setProject(appwriteConfig.projectId as string) // Your project ID

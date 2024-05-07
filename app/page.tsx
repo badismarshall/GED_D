@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function AuthenticationPage() {
   // const user = await getLoggedInUser();
-  // if(user) redirect('/documents')
+  // if(user) redirect('/dashboard')
 
   return (
     <>

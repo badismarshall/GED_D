@@ -8,6 +8,7 @@ export const appwriteConfig = {
     usercollectionId: process.env.APPWRITE_USER_COLLECTION_ID,
     postcollectionId: process.env.APPWRITE_POST_COLLECTION_ID,
     savescollectionId: process.env.APPWRITE_SAVES_COLLECTION_ID,
+    apiKey: process.env.APPWRITE_API_KEY
 };
 
 // export const client = new Client();
