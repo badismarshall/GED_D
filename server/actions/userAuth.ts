@@ -1,43 +1,36 @@
 'use server'
 
-import { createAdminClient, createSessionClient } from "@/lib/appwrite/api"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server"
+import { revalidatePath } from "next/cache";
 
 type signInProps =  {
     email: string
     password: string
 }
 
-async function signInWithEmail(formData : signInProps) {
-
-    const { email, password }  = formData
-    const { account } = await createAdminClient()
-
-    const session = await account.createEmailPasswordSession(email, password);
-
-    cookies().set('session', session.secret, {
-        path: '/dashboard',
-        maxAge: 60 * 60 * 24 * 7,
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: true
-    })
-
-    return session
-}
-
 async function signOut() {
-    try {
-        const { account } = await createSessionClient()
-        cookies().delete('session')
-        account.deleteSession('current');
-        console.log('User logged out')
-        redirect('/')
-    } catch (error) {
-        console.error('Error getting logged out user', error)
-    }
+    const supabase = createClient()
+
+    const { error } = await supabase.auth.signOut()
+    if (error) console.error('Logout failed:', error);
 }
 
+async function login(formData : signInProps) {
+    const supabase = createClient()
 
-export { signInWithEmail, signOut}
+    const data =  { 
+        email : formData.email as string,
+        password :  formData.password as string}  
+
+    const { error } = await supabase.auth.signInWithPassword(data)
+    
+    if (error) {
+        return true
+    }
+
+    revalidatePath('/', 'layout')
+    redirect('/')
+}
+
+export { signOut, login}

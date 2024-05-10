@@ -1,10 +1,20 @@
 import NavBar from "@/components/shared/NavBar";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;
   }>) {
+
+    
+    const supabase = createClient()
+
+    const { data, error } = await supabase.auth.getUser()
+    if (error || !data?.user) {
+      redirect('/login')
+  }
     return (
       <div className="flex h-screen flex-col">
         <NavBar />

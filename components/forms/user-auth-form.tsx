@@ -6,17 +6,18 @@ import { cn } from "@/lib/utils"
 import { Icons } from "@/components/ui/icons"
 import { Button } from '@/components/ui/button'
 import { Input } from "@/components/ui/input"
-import { signInWithEmail } from "@/server/actions/userAuth"
+import { login } from "@/server/actions/userAuth"
 import { SigninValidation } from "@/lib/validation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form"
+import { useToast } from "@/components/ui/use-toast"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
     defaultValues: {
@@ -26,21 +27,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   })
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
-  function onSubmit(values: z.infer<typeof SigninValidation>) {
-    
-    // get form data
-    
-    // event.preventDefault()
+  async function onSubmit(values: z.infer<typeof SigninValidation>) {
+
     setIsLoading(true)
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
-
-    const session = signInWithEmail({
+    const error = await login({
       email: values.email,
       password: values.password
     })
+
+    setIsLoading(false)
+    if (error) {
+      toast({
+        title: "Login Failed",
+        variant: "destructive",
+      })
+    }
   }
 
   return (
@@ -61,7 +63,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <FormControl>
                 <Input
                     id="email"
-                    placeholder="name@example.com"
+                    placeholder="@drnsi.com"
                     type="email"
                     autoCapitalize="none"
                     autoComplete="email"
@@ -84,7 +86,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <FormControl>
                 <Input
                     id="password"
-                    placeholder="name@example.com"
+                    placeholder="D R N S I"
                     type="password"
                     autoCapitalize="none"
                     autoCorrect="off"

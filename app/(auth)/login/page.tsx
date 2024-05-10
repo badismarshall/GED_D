@@ -3,8 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { UserAuthForm } from "@/components/forms/user-auth-form"
-import { getLoggedInUser } from "@/lib/appwrite/api"
-import { redirect } from "next/navigation";
+
 
 export const metadata: Metadata = {
   title: "DCNSI - Authentification",
@@ -12,8 +11,6 @@ export const metadata: Metadata = {
 }
 
 export default async function AuthenticationPage() {
-  // const user = await getLoggedInUser();
-  // if(user) redirect('/dashboard')
 
   return (
     <>
