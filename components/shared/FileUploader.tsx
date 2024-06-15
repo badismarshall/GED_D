@@ -19,13 +19,16 @@ const FileUploader = ({fieldChange}: FileUploaderProps) => {
             setFileUrl(URL.createObjectURL(acceptedFiles[0]))
           }, [file]
         )
-
+        // accept images 
         const {getRootProps, getInputProps} = useDropzone({
             onDrop, 
             accept: {
                 'application/pdf' : ['.pdf'],
                 'application/msword' : ['.doc'],
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : ['.docx']
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : ['.docx'],
+                'application/vnd.ms-excel' : ['.xls', '.xlsx'],
+                'image/jpeg': ['.jpeg'],
+                'image/png': ['.png'],
             }
         })
 
@@ -39,7 +42,7 @@ const FileUploader = ({fieldChange}: FileUploaderProps) => {
               <BadgeCheck className="h-10 w-10 text-green-500"/>
               <p className='font-inter'>{file[0]?.name}</p>
                 <p>
-                    Fichier téléchargé avec succès
+                    Fichier Ajouté avec succès
                 </p>
               {/* display file name */}
               <p className='text-slate-600 text-center pt-2'>Cliquez ou faites glisser pour remplacer</p>
@@ -55,8 +58,8 @@ const FileUploader = ({fieldChange}: FileUploaderProps) => {
                 height={100}
                 className="h-20 w-20"
               />
-              <h3 className='base-meduim text-light-2 mb-2 mt-6'>Faites glisser le Fichier ici</h3>
-              <p className='text-light-4 small-regular mb-6'>PDF, DOC, DOCX</p>
+              <h3 className='base-meduim text-light-2 mb-2 mt-6'>Faites glisser le fichier ici</h3>
+              <p className='text-light-4 small-regular mb-6'>PDF, DOC, DOCX, XLS, JPEG, PNG</p>
               <Upload className="h-4 w-4 opacity-50"/>
             </div>
 

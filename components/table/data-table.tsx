@@ -32,6 +32,7 @@ import {
   import { Button } from "@/components/ui/button"
 
   import { DataTableToolbar } from "@/components/table/components/data-table-toolbar"
+import { DataTablePagination } from "./components/data-table-pagination"
 
   
   
@@ -123,7 +124,8 @@ import {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <DataTablePagination table={table} />
+      {/* <div className="flex items-center justify-end space-x-2 py-4">
           <Button
             className="whitespace-nowrap border-0"
             variant="outline"
@@ -142,7 +144,7 @@ import {
           >
             Suivant
           </Button>
-        </div>
+        </div> */}
       </div>
     )
   }

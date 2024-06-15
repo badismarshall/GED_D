@@ -4,12 +4,13 @@ import { format } from "date-fns"
 import { fr } from 'date-fns/locale';
 import Image from 'next/image';
 
-const EmployeDetailsProfileGeneral = () => {
+function EmployeeDetailsProfileGeneral ({ employee } : { employee?: any[] }) {
+    // console.log('deff', employee)
   return (
     <div className='w-full'>
         <div className='flex justify-between items-center'>
             <h3 className="text-lg font-medium my-4">Informations personnelles</h3>
-            <a href='/employees/'>
+            <a href='/employeees/'>
                 <Image
                     src="/assets/icons/editicon.png"
                     alt='edit'
@@ -30,14 +31,14 @@ const EmployeDetailsProfileGeneral = () => {
                     <h2 className='text-sm text-muted-foreground'>Groupe Sanguin</h2>
                 </div>
                 <div className='flex flex-col gap-5 justify-center'>
-                    <h2 className='text-sm'>BadisMarshall</h2>
-                    <h2 className='text-sm'>Oussama</h2>
+                    <h2 className='text-sm'>{employee?.at(0).lastname}</h2>
+                    <h2 className='text-sm'>{employee?.at(0).firstname}</h2>
                     <h2 className='text-sm'>
-                        {format(new Date('1998-05-14'), "dd MMMM yyyy", { locale: fr })}
+                        {format(new Date(employee?.at(0).dateofbridth), "dd MMMM yyyy", { locale: fr })}
                     </h2>
-                    <h2 className='text-sm'>Alger</h2>
-                    <h2 className='text-sm'>Alger</h2>
-                    <h2 className='text-sm'>A+</h2>
+                    <h2 className='text-sm'>{employee?.at(0).province.name}</h2>
+                    <h2 className='text-sm'>{employee?.at(0).address}</h2>
+                    <h2 className='text-sm'>{employee?.at(0).blood.lib_fr}</h2>
                 </div>
             </div>
             <div className='flex gap-8'>
@@ -50,12 +51,16 @@ const EmployeDetailsProfileGeneral = () => {
                     <h2 className='text-sm text-muted-foreground'>Grade</h2>
                 </div>
                 <div className='flex flex-col gap-5 justify-center'>
-                    <h2 className='text-sm'>Homme</h2>
-                    <h2 className='text-sm'>201716001482</h2>
-                    <h2 className='text-sm'>47756622852</h2>
-                    <h2 className='text-sm'>0555172014</h2>
-                    <h2 className='text-sm'>2554716988855</h2>
-                    <h2 className='text-sm'>Colonel</h2>
+                    <h2 className='text-sm'>
+                        {
+                            employee?.at(0).sex == true ? 'Homme' : 'Femme'
+                        }
+                    </h2>
+                    <h2 className='text-sm'>{employee?.at(0).registrationnumber}</h2>
+                    <h2 className='text-sm'>{employee?.at(0).healthInsurancenumber}</h2>
+                    <h2 className='text-sm'>{employee?.at(0).phonenumber}</h2>
+                    <h2 className='text-sm'>{employee?.at(0).personalId}</h2>
+                    <h2 className='text-sm'>{employee?.at(0).rank.lib_fr}</h2>
                 </div>
             </div>
         </div>
@@ -63,4 +68,4 @@ const EmployeDetailsProfileGeneral = () => {
   )
 }
 
-export default EmployeDetailsProfileGeneral
+export default EmployeeDetailsProfileGeneral
