@@ -4,6 +4,7 @@ const page = () => {
 
   return (
     <>
+    <div><div>Réseau</div></div>
     </>
   )
 }

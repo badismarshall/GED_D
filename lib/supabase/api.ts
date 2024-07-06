@@ -1,7 +1,8 @@
 'use server'
 
 import { createClient } from "@/lib/supabase/server"
-import { tr } from "date-fns/locale"
+import { INewEmploye } from "@/types/typesParam"
+
 
 export async function uploadEmployeeFile(file: File) {
     try {
@@ -138,5 +139,96 @@ export async function deleteFileOfEmployee(filepath: string) {
         return data
     } catch (error) {
         console.log(error)
+    }
+}
+
+export async function addEmployee(employee: INewEmploye) {
+    try {
+        const supabase = createClient()
+        const { error } = await supabase
+        .from('employee')
+        .insert(
+            {
+                firstname: employee.firstname,
+                lastname: employee.lastname,
+                registrationnumber: employee.registrationNumber,
+                phonenumber: employee.phoneNumber,
+                dateofbridth: employee.dateOfBridth,
+                address: employee.address,
+                personalId: employee.personalId,
+                healthInsurancenumber: employee.healthInsuranceNumber,
+                sex: employee.sex,
+                portrait: employee.portrait[0],
+                job: employee.job,
+                blood: employee.blood,
+                province: employee.province,
+                rank_id: employee.rank,
+            }
+        )
+
+        if (error) {
+            throw new Error('Error adding Employee')
+        }
+
+        return error
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export async function getAllProvinces() {
+    try {
+        const supabase = createClient()
+        let { data: provinces, error } = await supabase
+            .from('province')
+            .select('*')
+
+        if(!provinces) {
+            throw new Error('No province found')
+        }
+
+        return { provinces, error }
+    } catch (error) {
+        console.log(error)
+        return { error }
+    }
+}
+
+
+export async function getAllBloods() {
+    try {
+        const supabase = createClient()
+        let {data: bloods, error } = await supabase
+            .from('blood')
+            .select('*')
+
+        if(!bloods) {
+            throw new Error('No blood found')
+        }
+
+        return { bloods, error }
+    }
+    catch(error) {
+        console.log(error)
+        return { error }
+    }
+}
+
+export async function getAllRanks() {
+    try {
+        const supabase = createClient()
+        let { data: ranks, error } = await supabase
+            .from('rank')
+            .select('*')
+
+        if(!ranks) {
+            throw new Error('No rank found')
+        }
+
+        return { ranks, error }
+    } catch (error) {
+        console.log(error)
+        return { error }
     }
 }

@@ -10,7 +10,7 @@ async function EmployeDetails ({ params : { id } } : EmployeParam) {
   /*
       we need to fetch Employe data and pass them to 
       EmployeDetailsCard and EmployeDetailsCard components
-      Note: we dont pass the id we pass all data
+      Note: we dont pass the id we pass all data (done)
   */
 
     /* ------  Test List files  ------*/

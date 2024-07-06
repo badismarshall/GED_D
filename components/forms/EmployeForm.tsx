@@ -2,7 +2,7 @@
 
 import { EmployeValidation } from '@/lib/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { z } from 'zod'
 import {
@@ -29,28 +29,71 @@ import { Calendar } from '../ui/calendar'
 import { CalendarIcon} from 'lucide-react'
 import { format } from 'date-fns'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { wilayaS } from '@/lib/wilayas'
 import FileUploader from '../shared/FileUploader'
 import ProfileUploader from '../shared/ImageUploader'
+import { useToast } from "@/components/ui/use-toast"
+import { addEmployee, getAllBloods, getAllProvinces, getAllRanks } from '@/lib/supabase/api'
+import { Icons } from '../ui/icons'
+import { IBlood, IProvince, IRank } from '@/types/typesParam'
 
 
-const EmployeForm = () => {
+ function EmployeForm () {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [provinces, setProvinces] = useState<IProvince[]>([])
+  const [bloods, setBlood] = useState<IBlood[]>([])
+  const [ranks, setRanks] = useState<IRank[]>([])
+  const { toast } = useToast()
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof EmployeValidation>>({
         resolver: zodResolver(EmployeValidation),
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof EmployeValidation>) {
+     async function onSubmit(values: z.infer<typeof EmployeValidation>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        // const newmessage = createMessage({
-        // ...values,
-        // nbattachments: Number(values.nbattachments),
-        // number: Number(values.number),
-        // arrived: values.arrived === 'true' ? true : false,
-        //  })
+        setIsLoading(true)
+        const  error  = await addEmployee({
+          firstname: values.firstname,
+          lastname: values.lastname,
+          rank: values.rank,
+          registrationNumber: values.registrationNumber,
+          job: values.job,
+          phoneNumber: values.phoneNumber,
+          dateOfBridth: values.dateOfBridth,
+          province: values.province,
+          address: values.address,
+          personalId: values.personalId,
+          healthInsuranceNumber: values.healthInsuranceNumber,
+          sex: values.sex == 'M' ? true : false,
+          portrait: values.portrait,
+          blood: values.blood,
+        })
+        toast({
+          title: "Employé ajouté avec succès",
+        })
+        setIsLoading(false)
     }
+
+    useEffect(() => {
+      const getProvinces = async() => {
+        const { provinces, error } =  await getAllProvinces()
+        provinces && setProvinces(provinces as IProvince[])
+      }
+      const getBloods = async() => {
+        const { bloods, error } = await getAllBloods()
+        bloods && setBlood(bloods as IBlood[])
+      }
+      const getRanks = async() => {
+        const { ranks, error } = await getAllRanks()
+        ranks && setRanks(ranks as IRank[])
+      }
+      getProvinces()
+      getBloods()
+      getRanks()
+    }, [])
+    
 
   return (
     <Form {...form}>
@@ -118,7 +161,27 @@ const EmployeForm = () => {
                   <FormLabel className="" >Grade</FormLabel>
                 </div>
                 <FormControl>
-                  <Input type="text" className="" {...field} />
+                  {/* <Input type="text" className="" {...field} /> */}
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue className='text-primary' placeholder="Selectioner le grade d'employé." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {
+                      ranks.length > 0 && ranks.map((rank) => (
+                        <SelectItem key={ rank.id } value={ rank.id } className="hover:bg-primary-foreground hover:text-primary" >
+                          { rank.lib_fr }
+                          {/* <div className='flex justify-between gap-16'>
+                              { rank.id }
+                              <span className='ml-2 text-primary'>{ rank.lib_fr }</span>
+                          </div> */}
+                        </SelectItem>
+                      ))
+                    }
+                  </SelectContent>
+                </Select>
                 </FormControl>
                 <FormDescription className="text-gray-400">
                   Le Grade d'employé.
@@ -127,7 +190,7 @@ const EmployeForm = () => {
               </FormItem>
             )}
           />
-                  <FormField
+          <FormField
             control={form.control}
             name="job"
             render={({ field }) => (
@@ -210,7 +273,7 @@ const EmployeForm = () => {
                   alt="title" 
                    className="w-[30px] h-[30px] mr-2"
                 /> */}
-                <FormLabel className="" >Numéro Tel</FormLabel>
+                <FormLabel className="" >Numéro de téléphone</FormLabel>
               </div>
               <FormControl>
               <InputOTP
@@ -329,23 +392,22 @@ const EmployeForm = () => {
                   alt="title" 
                    className="w-[30px] h-[30px] mr-2"
                 /> */}
-                <FormLabel className="" >Wilaya</FormLabel>
+                <FormLabel className="" >Wilaya de naissance</FormLabel>
               </div>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selectioner la wilaya de naissance " />
+                      <SelectValue placeholder="Selectioner la province de naissance " />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {
-                      wilayaS.map((wilaya, index) => (
-                        <SelectItem key={index} value={wilaya.code} className="hover:bg-primary-foreground hover:text-primary" >
+                      provinces.map((province, index) => (
+                        <SelectItem key={index} value={province.id} className="hover:bg-primary-foreground hover:text-primary" >
                           <div className='flex justify-between gap-16'>
-                            {wilaya.code}
-                            <span className='ml-2'>{wilaya.ar_name}</span>
-                            
+                              { province.code }
+                              <span className='ml-2'>{ province.ar_name }</span>
                           </div>
                         </SelectItem>
                       ))
@@ -354,7 +416,7 @@ const EmployeForm = () => {
                 </Select>
               </FormControl>
               <FormDescription className="text-gray-400">
-                La wilaya de naissance d'employé.
+                La province de naissance d'employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -524,45 +586,33 @@ const EmployeForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center">
-                {/* <img 
-                  src="/public/assets/icons/banner_title.png" 
-                  alt="title" 
-                   className="w-[30px] h-[30px] mr-2"
-                /> */}
-                <FormLabel className="" >Groupe sanguin</FormLabel>
+                {
+                  /* <img 
+                    src="/public/assets/icons/banner_title.png" 
+                    alt="title" 
+                    className="w-[30px] h-[30px] mr-2"
+                  /> */
+                }
+                <FormLabel className="">Groupe sanguin</FormLabel>
               </div>
               <FormControl>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={ field.onChange } defaultValue={ field.value }>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Selectioner le groupe sanguin " />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="A+" className="hover:bg-primary-foreground hover:text-primary" >
-                      A+
-                    </SelectItem>
-                    <SelectItem value="A-" className="hover:bg-primary-foreground hover:text-primary" >
-                      A-
-                    </SelectItem>
-                    <SelectItem value="AB-" className="hover:bg-primary-foreground hover:text-primary" >
-                      AB-
-                    </SelectItem>
-                    <SelectItem value="AB+" className="hover:bg-primary-foreground hover:text-primary" >
-                      AB+
-                    </SelectItem>
-                    <SelectItem value="B+" className="hover:bg-primary-foreground hover:text-primary" >
-                      B+
-                    </SelectItem>
-                    <SelectItem value="B-" className="hover:bg-primary-foreground hover:text-primary" >
-                      B-
-                    </SelectItem>
-                    <SelectItem value="O+" className="hover:bg-primary-foreground hover:text-primary" >
-                      O+
-                    </SelectItem>
-                    <SelectItem value="O-" className="hover:bg-primary-foreground hover:text-primary" >
-                      O+
-                    </SelectItem>
+                    {
+                      bloods.map((blood, index) => (
+                        <SelectItem key={index} value={blood.id} className="hover:bg-primary-foreground hover:text-primary" >
+                          <div className='flex justify-between gap-16'>
+                            {/* { blood.id } */}
+                            <span className='ml-2'>{blood.lib_fr}</span>
+                          </div>
+                        </SelectItem>
+                      )) 
+                    }
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -574,11 +624,13 @@ const EmployeForm = () => {
           )}
         />
         <Button 
-          type="submit" 
+          type="submit"
+          disabled={isLoading}
           className=""
-        //   disabled={isLoadingCreate}
         >
-          {/* {isLoadingCreate && 'Loading...'} */}
+          {isLoading && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          )}
             Ajouter un employé
         </Button>
         </form>

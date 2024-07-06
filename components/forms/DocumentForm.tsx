@@ -1,5 +1,6 @@
 "use client"
 
+import React, { useState } from 'react'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -21,6 +22,8 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { arSA } from 'date-fns/locale';
 import { cn } from "@/lib/utils"
+import { useToast } from "@/components/ui/use-toast"
+
 import {
     Select,
     SelectContent,
@@ -28,10 +31,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useState } from "react"
 import FileUploader from "../shared/FileUploader"
 
 const DocumentForm = () => {
+
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const { toast } = useToast()
+
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof MessageValidation>>({
         resolver: zodResolver(MessageValidation),
@@ -39,9 +46,10 @@ const DocumentForm = () => {
 
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof MessageValidation>) {
+    async function onSubmit(values: z.infer<typeof MessageValidation>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        setIsLoading(true)
         // const newmessage = createMessage({
         // ...values,
         // nbattachments: Number(values.nbattachments),

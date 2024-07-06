@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Separator } from '../ui/separator'
 import { PaginationState } from '@tanstack/react-table'
 import { EmployeeDocumentsTablecolumns } from '@/types/personaldocumentClolumnTypes'
@@ -24,7 +24,7 @@ import { uploadEmployeeFile } from '@/lib/supabase/api'
 import Loader from './Loader'
 
 
-export  function EmployeDetailsProfileDocuments(
+function EmployeDetailsProfileDocuments(
     { employeeRegistrationNumber, documents } : { employeeRegistrationNumber?: string, documents?: any[] }) 
   {
     console.log('documents: ', documents) 

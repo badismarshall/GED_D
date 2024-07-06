@@ -11,4 +11,8 @@ export const headerLinks = [
       label: 'Employés',
       route: '/employees',
     },
+    {
+      label: 'Réseau',
+      route: '/network',
+    }
   ]

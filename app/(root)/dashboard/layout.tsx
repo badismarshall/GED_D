@@ -36,8 +36,8 @@ const layout = ({
           sidebarNavItems={sidebarNavItems}
           title='Tableau de board'
           description='Manage your account settings and set e-mail preferences.'
-          >
-            {children}
+        >
+            { children }
         </SideBar> 
         
     </div>
