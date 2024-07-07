@@ -35,7 +35,7 @@ export default async function AuthenticationPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                "The only way to do great work is to love what you do."
+               &quot;The only way to do great work is to love what you do.&quot;
               </p>
               <footer className="text-sm">Badis MarshalL</footer>
             </blockquote>
@@ -58,7 +58,7 @@ export default async function AuthenticationPage() {
                 href="/terms"
                 className="underline underline-offset-4 hover:text-primary"
               >
-                Conditions d'utilisation
+                Conditions d&apos;utilisation
               </Link>{" "}
               et{" "}
               <Link

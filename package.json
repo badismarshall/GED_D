@@ -22,6 +22,8 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
+    "@supabase-cache-helpers/postgrest-react-query": "^1.7.0",
+    "@supabase-cache-helpers/storage-react-query": "^1.2.1",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.1",
     "@tanstack/react-table": "^8.13.2",

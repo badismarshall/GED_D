@@ -58,7 +58,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           render={({ field }) => (
             <FormItem className="grid gap-1">
               <FormLabel className="" htmlFor="email">
-                Nom d'utilisateur or Email
+                Nom d&apos;utilisateur or Email
               </FormLabel>
               <FormControl>
                 <Input

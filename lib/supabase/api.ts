@@ -4,17 +4,34 @@ import { createClient } from "@/lib/supabase/server"
 import { INewEmploye } from "@/types/typesParam"
 
 
-export async function uploadEmployeeFile(file: File) {
+// export async function uploadEmployeeFile(file: File, employeeRegistrationNumber?: string) {
+//     try {
+//         const supabase = createClient()
+//         const { data, error } = await supabase.storage
+//         .from('employeefiles')
+//         .upload(`private/${employeeRegistrationNumber}/${Date.now()}_${file.name}`, file, {
+//                 cacheControl: '3600',
+//                 upsert: false
+//             })
+//         // if (error) {
+//         //     console.log('Error uploading file in api: ')
+//         //     return error
+//         // }
+//         return data
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
+export async function uploadEmployeeFile(file: File, employeeRegistrationNumber?: string) {
     try {
         const supabase = createClient()
-        const { data, error } = await supabase.storage.from('employeefiles').upload(`public/${Date.now()}_${file.name}`, file, {
+        return supabase.storage
+        .from('employeefiles')
+        .upload(`private/${employeeRegistrationNumber}/${Date.now()}_${file.name}`, file, {
                 cacheControl: '3600',
                 upsert: false
             })
-        if (error) {
-            console.log('Error uploading file in api: ')
-            return error
-        }
     } catch (error) {
         console.log(error)
     }

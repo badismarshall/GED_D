@@ -45,7 +45,7 @@ function EmployeeDetailsProfileGeneral ({ employee } : { employee?: any[] }) {
                 <div className='flex flex-col gap-5 justify-center'>
                     <h2 className='text-sm text-muted-foreground'>Sexe</h2>
                     <h2 className='text-sm text-muted-foreground'>Matricule</h2>
-                    <h2 className='text-sm text-muted-foreground'>Num d'assurence</h2>
+                    <h2 className='text-sm text-muted-foreground'>Num d&apos;assurence</h2>
                     <h2 className='text-sm text-muted-foreground'>Numéro de téléphone</h2>
                     <h2 className='text-sm text-muted-foreground'>Matricule Civil</h2>
                     <h2 className='text-sm text-muted-foreground'>Grade</h2>

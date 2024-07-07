@@ -146,7 +146,7 @@ import { createClient } from '@/lib/supabase/client'
                 <Input type="text" className="" {...field} />
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le Nom d'employé.
+                Le Nom d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -169,7 +169,7 @@ import { createClient } from '@/lib/supabase/client'
                 <Input type="text" className="" {...field} />
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le Prénom d'employé.
+                Le Prénom d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -214,7 +214,7 @@ import { createClient } from '@/lib/supabase/client'
                 </Select>
                 </FormControl>
                 <FormDescription className="text-gray-400">
-                  Le Grade d'employé.
+                  Le Grade d&apos;employé.
                 </FormDescription>
                 <FormMessage className="" />
               </FormItem>
@@ -253,7 +253,7 @@ import { createClient } from '@/lib/supabase/client'
                   </Select>
                 </FormControl>
                 <FormDescription className="text-gray-400">
-                  L'emploi d'employé.
+                  L'emploi d&apos;employé.
                 </FormDescription>
                 <FormMessage className="" />
               </FormItem>
@@ -302,7 +302,7 @@ import { createClient } from '@/lib/supabase/client'
                 />
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le Matricule d'employé.
+                Le Matricule d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -361,7 +361,7 @@ import { createClient } from '@/lib/supabase/client'
                 />
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le numéro de téléphone d'employé.
+                Le numéro de téléphone d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -421,7 +421,7 @@ import { createClient } from '@/lib/supabase/client'
               </Popover>
               </FormControl>
               <FormDescription className="text-gray-400">
-                La date de naissance d'employé.
+                La date de naissance d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -461,7 +461,7 @@ import { createClient } from '@/lib/supabase/client'
                 </Select>
               </FormControl>
               <FormDescription className="text-gray-400">
-                La province de naissance d'employé.
+                La province de naissance d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -484,7 +484,7 @@ import { createClient } from '@/lib/supabase/client'
                 <Input type="text" className="" {...field} />
               </FormControl>
               <FormDescription className="text-gray-400">
-                L'address d'employé.
+                L&apos;address d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -519,7 +519,7 @@ import { createClient } from '@/lib/supabase/client'
                 />
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le Matricule civile d'employé.
+                Le Matricule civile d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -536,7 +536,7 @@ import { createClient } from '@/lib/supabase/client'
                   alt="title" 
                    className="w-[30px] h-[30px] mr-2"
                 /> */}
-                <FormLabel className="" >Numéro d'assurence</FormLabel>
+                <FormLabel className="" >Numéro d&apos;assurence</FormLabel>
               </div>
               <FormControl>
               <InputOTP
@@ -552,7 +552,7 @@ import { createClient } from '@/lib/supabase/client'
                 />
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le Numéro d'assurence d'employé.
+                Le Numéro d&apos;assurence d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -593,7 +593,7 @@ import { createClient } from '@/lib/supabase/client'
                 </Select>
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le Sexe d'employé.
+                Le Sexe d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -620,7 +620,7 @@ import { createClient } from '@/lib/supabase/client'
                 />
               </FormControl>
               <FormDescription className="text-gray-400">
-                Une image d'employé.
+                Une image d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -663,7 +663,7 @@ import { createClient } from '@/lib/supabase/client'
                 </Select>
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le Groupe sanguin d'employé.
+                Le Groupe sanguin d&apos;employé.
               </FormDescription>
               <FormMessage className="" />
             </FormItem>

@@ -151,7 +151,7 @@ const DocumentForm = () => {
                   alt="title" 
                   className="w-[30px] h-[30px] mr-2"
                 /> */}
-                <FormLabel className="">Date d'Envoi</FormLabel>
+                <FormLabel className="">Date d&apos;Envoi</FormLabel>
               </div>
               <Popover>
                 <PopoverTrigger asChild>
@@ -190,7 +190,7 @@ const DocumentForm = () => {
                 </PopoverContent>
               </Popover>
               <FormDescription className="text-gray-400">
-                La date d'envoi du message (ex: 01/01/2021)
+                La date d&apos;envoi du message (ex: 01/01/2021)
               </FormDescription>
               <FormMessage className=""/>
             </FormItem>
@@ -207,13 +207,13 @@ const DocumentForm = () => {
                   alt="title" 
                   className="w-[30px] h-[30px] mr-2"
                 /> */}
-                <FormLabel>Numero d'Envoi Message</FormLabel>
+                <FormLabel>Numero d&apos;Envoi Message</FormLabel>
               </div>
               <FormControl>
                 <Input type='number' className="shad-input" {...field}/>
               </FormControl>
               <FormDescription className="text-gray-400">
-                La Numéro d'envoi du message (ex: 1, 2, 3, etc.)
+                La Numéro d&apos;envoi du message (ex: 1, 2, 3, etc.)
               </FormDescription>
               <FormMessage className="" />
             </FormItem>
@@ -230,13 +230,13 @@ const DocumentForm = () => {
                   alt="title" 
                   className="w-[30px] h-[30px] mr-2"
                 /> */}
-                <FormLabel>Nombre d'Attachements</FormLabel>
+                <FormLabel>Nombre d&apos;Attachements</FormLabel>
               </div>
               <FormControl>
                 <Input type='number' className="shad-input" {...field}/>
               </FormControl>
               <FormDescription className="text-gray-400">
-                Le nombre d'attachements du message (PDF, etc.)
+                Le nombre d&apos;attachements du message (PDF, etc.)
               </FormDescription>
               <FormMessage className=""/>
             </FormItem>

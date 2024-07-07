@@ -39,7 +39,7 @@ async function EmployeDetails ({ params : { id } } : EmployeParam) {
   return (
     <div className="space-y-3">
     <div>
-      <h3 className="text-lg font-medium">Detail d'Employé</h3>
+      <h3 className="text-lg font-medium">Detail d&apos;Employé</h3>
     </div>
     <Separator />
     <div className='flex gap-6 w-full'>

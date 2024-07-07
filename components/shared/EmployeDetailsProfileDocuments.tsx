@@ -22,6 +22,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { getDocumentsByEmployee } from '@/lib/supabase/api'
 import { uploadEmployeeFile } from '@/lib/supabase/api'
 import Loader from './Loader'
+import { useUploadEmployeeFile } from '@/lib/react-query/quriesAndmutations'
 
 
 function EmployeDetailsProfileDocuments(
@@ -63,29 +64,39 @@ function EmployeDetailsProfileDocuments(
         //   return documents?.length ? Math.ceil(documents.length / pageSize) : 0;
         // }, [documents?.length, pageSize]);
         
-      async function onSubmit(values: z.infer<typeof UploadEmployeeFilesValidation>) {
+       function onSubmit(values: z.infer<typeof UploadEmployeeFilesValidation>) {
         // I don't Know why this is not working when using the api function (server action) 
         setIsLoading(true)
         try {
-          const supabase = createClient()
-          const { data, error } = await supabase.storage
-              .from('employeefiles')
-              .upload(`private/${employeeRegistrationNumber}/${Date.now()}_${values.file[0].name}`, values.file[0], {
-                      cacheControl: '3600',
-                      upsert: false
-              })
+          // const supabase = createClient()
+          // const { data, error } = await supabase.storage
+          //     .from('employeefiles')
+          //     .upload(`private/${employeeRegistrationNumber}/${Date.now()}_${values.file[0].name}`, values.file[0], {
+          //             cacheControl: '3600',
+          //             upsert: false
+          //     })
+
+          const upload  = useUploadEmployeeFile(values.file[0], employeeRegistrationNumber)
+          // if ((await upload).error) {
+          //   console.log('Error uploading file in api: ')
+          //   toast({
+          //     title: "échec du téléchargement",
+          //     variant: "destructive",
+          //   })
+          //   return (await upload).error
+          // }
 
           // I will test the apiClient why it is not working
-          // const { data, error } = await uploadEmployeeFile(values.file[0], employeeRegistrationNumber)
-
-          if (error) {
-              console.log('Error uploading file in api: ')
-              toast({
-                title: "échec du téléchargement",
-                variant: "destructive",
-              })
-              return error
-          }
+          // const uploadedfile = await uploadEmployeeFile(values.file[0], employeeRegistrationNumber)
+          
+          // if (uploadedfile?.error) {
+          //     console.log('Error uploading file in api: ')
+          //     toast({
+          //       title: "échec du téléchargement",
+          //       variant: "destructive",
+          //     })
+          //     return uploadedfile?.error
+          // }
         } catch (error) {
           toast({
             title: "échec du téléchargement",
