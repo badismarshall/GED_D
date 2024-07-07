@@ -16,16 +16,16 @@ export const MessageValidation = z.object({
     {
       firstname: z.string().min(3, {message: "Trop court"}).max(150), /* Nom */
       lastname: z.string().min(3, {message: "Trop court"}).max(150), /* Prénom */
-      rank: z.string().min(3, {message: "Ajouter le grade militaire"}).max(1000).default(''),  /* Grade */
+      rank: z.string().min(1, {message: "Ajouter le grade militaire"}).max(1000).default(''),  /* Grade */
       registrationNumber: z.string(), /* we need maybe to format it */ /* Matricule */
-      job: z.string().min(2, {message: "Ajouter la fontion d'employé"}).max(1000).default(''), /* Emploi ou Poste */
+      job: z.string().min(1, {message: "Ajouter la fontion d'employé"}).max(1000).default(''), /* Emploi ou Poste */
       phoneNumber: z.string(), /* Numero Tel */
       dateOfBridth: z.date(), /* Date de naissance */
-      province: z.string().min(2, {message: "Ajoute la Wilaya"}).max(200), /* Wilaya de naissance */
+      province: z.string().min(1, {message: "Ajoute la Wilaya"}).max(200), /* Wilaya de naissance */
       address: z.string().min(2, {message: "Ajouter l'address"}).max(300), /* Address */
       personalId: z.string(), /* Matricule civile */
       healthInsuranceNumber :  z.string(), /* we need maybe to format it */ /* Num d'assurence */
-      sex: z.string().min(2, {message: "Ajouter le sexe"}).max(90), /* Masculin, Féminin */
+      sex: z.string().min(1, {message: "Ajouter le sexe"}).max(90), /* Masculin, Féminin */
       portrait: z.custom<File[]>(), /* Une image d'employé */
       blood: z.string().min(1, {message: "Ajouter le groupe sanguin"}).max(10) /* Groupe sanguin */ 
     }

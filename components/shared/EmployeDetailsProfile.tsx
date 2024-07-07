@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import EmployeDetailsProfileGeneral from './EmployeDetailsProfileGeneral'
 import EmployeDetailsProfileDocuments from './EmployeDetailsProfileDocuments'
 import Loader from './Loader'
-import { countFilesInFolder, getAllFilesInFolder, getDocumentsByEmployee } from '@/lib/supabase/api'
+import { countFilesInFloderFunc, getAllFilesInFolderFunc, getDocumentsByEmployee } from '@/lib/supabase/api'
 import { countFilesInBucket } from '@/lib/supabase/functionsapi'
 
 async function EmployeDetailsProfile ({ employee }:{ employee?: any[] }) {
@@ -14,18 +14,15 @@ async function EmployeDetailsProfile ({ employee }:{ employee?: any[] }) {
     // console.log('documents: ', documents)
     
     // getAllFilesInFolder represent getDocumentsByEmployee
-    const { data, error } = await getAllFilesInFolder('employeefiles', `private/${employee?.at(0).registrationnumber}`)
-    console.log('documents: ', data)
+    console.log('employee: ', employee?.at(0).registrationnumber)
+    const FilesData = await getAllFilesInFolderFunc('employeefiles', `private/${employee?.at(0).registrationnumber}`)
+    console.log('documents: ', FilesData)
 
-    if(error) return (
-      <div className='flex-center w-full h-full'>
-          <Loader/>
-      </div>
-    )
    
-    const numberOfDocuments = await countFilesInFolder('employeefiles', `private/${employee?.at(0).registrationnumber}`)
-    console.log('number of documents: ', numberOfDocuments?.count)
-
+    // const numberOfDocuments = await countFilesInFolder('employeefiles', `private/${employee?.at(0).registrationnumber}`)
+    // console.log('number of documents: ', numberOfDocuments?.count)
+    const numberOfDocuments = await countFilesInFloderFunc('employeefiles', `private/${employee?.at(0).registrationnumber}`) 
+    console.log('number of documents: ', numberOfDocuments)
 
     
   return (
@@ -45,7 +42,7 @@ async function EmployeDetailsProfile ({ employee }:{ employee?: any[] }) {
               <EmployeDetailsProfileDocuments
                 // pass the registration number and the documents files
                 employeeRegistrationNumber= { employee?.at(0).registrationnumber }
-                documents={data}
+                documents={FilesData?.data}
               />
             </TabsContent>
             <TabsContent value="settings">

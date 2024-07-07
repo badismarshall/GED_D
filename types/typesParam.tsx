@@ -40,3 +40,9 @@ export type IRank = {
     abr_ar: string
     category: string
 }
+
+export type IJob = {
+    id: string
+    lib_fr: string
+    lib_ar: string
+}

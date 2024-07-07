@@ -66,11 +66,13 @@ const DocumentForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center">
-                {/* <img 
-                  src="/public/assets/icons/banner_title.png" 
-                  alt="title" 
-                   className="w-[30px] h-[30px] mr-2"
-                /> */}
+                {
+                  /* <img 
+                    src="/public/assets/icons/banner_title.png" 
+                    alt="title" 
+                    className="w-[30px] h-[30px] mr-2"
+                  /> */
+                }
                 <FormLabel className="" >Titre</FormLabel>
               </div>
               <FormControl>
@@ -296,11 +298,13 @@ const DocumentForm = () => {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center">
-                {/* <img 
-                  src="/public/assets/icons/messagetype_icon.png" 
-                  alt="title" 
-                  className="w-[30px] h-[30px] mr-2"
-                /> */}
+                {
+                  /* <img 
+                    src="/public/assets/icons/messagetype_icon.png" 
+                    alt="title" 
+                    className="w-[30px] h-[30px] mr-2"
+                  /> */
+                }
                 <FormLabel>Type du message</FormLabel>
               </div>
               <Select onValueChange={field.onChange} defaultValue={field.value} >

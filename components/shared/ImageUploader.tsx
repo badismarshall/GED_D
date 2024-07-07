@@ -1,25 +1,20 @@
-import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { UserRound } from 'lucide-react'
 import { convertFileToUrl } from "@/lib/utils";
 
 type ProfileUploaderProps = {
-  fieldChange: (files: File[]) => void;
+  fieldChange: (url: string) => void;
   mediaUrl: string;
+  setFiles: Dispatch<SetStateAction<File[]>>
 };
 
-const ProfileUploader = ({ fieldChange, mediaUrl }: ProfileUploaderProps) => {
-  const [file, setFile] = useState<File[]>([]);
-  const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
-
+const ProfileUploader = ({ fieldChange, mediaUrl, setFiles}: ProfileUploaderProps) => {
   const onDrop = useCallback(
-    (acceptedFiles: FileWithPath[]) => {
-      setFile(acceptedFiles);
-      fieldChange(acceptedFiles);
-      setFileUrl(convertFileToUrl(acceptedFiles[0]));
-    },
-    [file]
-  );
+    (acceptedFiles: File[]) => {
+      setFiles(acceptedFiles);
+      fieldChange(convertFileToUrl(acceptedFiles[0]));
+    },[]);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -33,10 +28,10 @@ const ProfileUploader = ({ fieldChange, mediaUrl }: ProfileUploaderProps) => {
       <input {...getInputProps()} className="cursor-pointer" />
 
       <div className="cursor-pointer flex-col flex items-center p-7 justify-center gap-4 bg-slate-100 rounded-2xl">
-        {fileUrl ? (
+        {mediaUrl ? (
             <>
                 <img
-                    src={fileUrl || "/assets/icons/userroundicon.png"}
+                    src={mediaUrl || "/assets/icons/userroundicon.png"}
                     alt="image"
                     className="h-24 w-24 rounded-full object-cover object-center"
                 />

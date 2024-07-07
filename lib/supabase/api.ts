@@ -67,44 +67,77 @@ export async function getDocumentsByEmployee(employeeRegistrationNumber? : strin
 
 }
 
-export async function getAllFilesInFolder(bucketName: string, folderPath: string) {
+// export async function getAllFilesInFolder(bucketName: string, folderPath: string) {
+//     try {
+//         const supabase = createClient()
+//         let { data, error } = await supabase
+//             .schema('storage')
+//             .from('objects')
+//             .select('*')
+//             .eq('bucket_id', bucketName)
+//             .like('name', `${folderPath}/%`)
+
+//         return  { data, error }
+
+//     } catch (error) {
+//         console.log(error)
+//         return { error }
+//     }
+   
+// }
+
+//  we use supabase functions to acces the storage.objects table
+export async function getAllFilesInFolderFunc(bucketName: string, folderPath: string) {
     try {
         const supabase = createClient()
         let { data, error } = await supabase
-            .schema('storage')
-            .from('objects')
-            .select('*')
-            .eq('bucket_id', bucketName)
-            .like('name', `${folderPath}/%`)
-
-            if(!data) {
-                throw new Error('Folder not found')
-            }
-
-        return  { data, error }
-
+            .rpc('getfilesbuckts', 
+                { 
+                    bucket_name: bucketName, 
+                    folder_path: folderPath 
+                }
+            )
+        return { data, error }
     } catch (error) {
         console.log(error)
-        return { error }
     }
-   
+    
+    
 }
 
-export async function countFilesInFolder(bucketName: string, folderPath: string) {
+// export async function countFilesInFolder(bucketName: string, folderPath: string) {
+//     try {
+//         const supabase = createClient()
+//         let { data, count, error } = await supabase
+//             .schema('storage')
+//             .from('objects')
+//             .select('id', { count: 'exact', head: true }) // we don't need to get all the data
+//             .eq('bucket_id', bucketName)
+//             .like('name', `${folderPath}/%`)
+
+//         return { data, count, error }
+
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
+//  we use supabase functions to acces the storage.objects table
+export async function countFilesInFloderFunc(bucket_name: string, folder_path: string) {
     try {
         const supabase = createClient()
-        let { data, count, error } = await supabase
-            .schema('storage')
-            .from('objects')
-            .select('id', { count: 'exact', head: true }) // we don't need to get all the data
-            .eq('bucket_id', bucketName)
-            .like('name', `${folderPath}/%`)
-
-        return { data, count, error }
-
+        let { data, error } = await supabase
+            .rpc('countfilesbuckts', 
+                { 
+                    bucket_name, 
+                    folder_path 
+                }
+            )
+        return { data, error }
     } catch (error) {
         console.log(error)
     }
+    
 }
 
 
@@ -227,6 +260,24 @@ export async function getAllRanks() {
         }
 
         return { ranks, error }
+    } catch (error) {
+        console.log(error)
+        return { error }
+    }
+}
+
+export async function getAllJobs() {
+    try {
+        const supabase = createClient()
+        let { data: jobs, error } = await supabase
+            .from('job')
+            .select('*')
+
+        if(!jobs) {
+            throw new Error('No job found')
+        }
+
+        return { jobs, error }
     } catch (error) {
         console.log(error)
         return { error }

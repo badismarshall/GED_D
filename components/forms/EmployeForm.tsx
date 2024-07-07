@@ -27,22 +27,25 @@ import { cn } from '@/lib/utils'
 import { arSA } from 'date-fns/locale'
 import { Calendar } from '../ui/calendar'
 import { CalendarIcon} from 'lucide-react'
-import { format } from 'date-fns'
+import { format, set } from 'date-fns'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import FileUploader from '../shared/FileUploader'
 import ProfileUploader from '../shared/ImageUploader'
 import { useToast } from "@/components/ui/use-toast"
-import { addEmployee, getAllBloods, getAllProvinces, getAllRanks } from '@/lib/supabase/api'
+import { addEmployee, getAllBloods, getAllJobs, getAllProvinces, getAllRanks } from '@/lib/supabase/api'
 import { Icons } from '../ui/icons'
-import { IBlood, IProvince, IRank } from '@/types/typesParam'
-
+import { IBlood, IJob, IProvince, IRank } from '@/types/typesParam'
+import { createClient } from '@/lib/supabase/client'
 
  function EmployeForm () {
+  const [files, setFiles] = useState<File[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [provinces, setProvinces] = useState<IProvince[]>([])
   const [bloods, setBlood] = useState<IBlood[]>([])
   const [ranks, setRanks] = useState<IRank[]>([])
+  const [jobs, setJobs] = useState<IJob[]>([])
   const { toast } = useToast()
+  const supabase = createClient()
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof EmployeValidation>>({
@@ -54,27 +57,49 @@ import { IBlood, IProvince, IRank } from '@/types/typesParam'
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         setIsLoading(true)
-        const  error  = await addEmployee({
-          firstname: values.firstname,
-          lastname: values.lastname,
-          rank: values.rank,
-          registrationNumber: values.registrationNumber,
-          job: values.job,
-          phoneNumber: values.phoneNumber,
-          dateOfBridth: values.dateOfBridth,
-          province: values.province,
-          address: values.address,
-          personalId: values.personalId,
-          healthInsuranceNumber: values.healthInsuranceNumber,
-          sex: values.sex == 'M' ? true : false,
-          portrait: values.portrait,
-          blood: values.blood,
-        })
-        toast({
-          title: "Employé ajouté avec succès",
-        })
+        if (files.length > 0) {
+          const { data, error } = await supabase.storage
+            .from('employeefiles')
+            .upload(`private/${values.registrationNumber}/${Date.now()}_${files[0].name}`, files[0])
+          if (error) {
+            console.error('Error uploading file: ', error)
+            toast({
+              title: "échec du téléchargement de l'image de profil",
+              variant: "destructive",
+            })
+            return error
+          } else {
+            const { error } = await supabase.from('employee').insert(
+              {
+                  firstname: values.firstname,
+                  lastname: values.lastname,
+                  registrationnumber: values.registrationNumber,
+                  phonenumber: values.phoneNumber,
+                  dateofbridth: values.dateOfBridth,
+                  address: values.address,
+                  personalId: values.personalId,
+                  healthInsurancenumber: values.healthInsuranceNumber,
+                  sex: values.sex == 'M' ? true : false,
+                  path_profile_image: data.path,
+                  job: values.job,
+                  blood: values.blood,
+                  province: values.province,
+                  rank_id: values.rank,
+              })
+
+              if(!error) {
+                toast({
+                  title: "Employé ajouté avec succès",
+                })
+              } else {
+                toast({
+                  title: "Erreur lors de l'ajout d'employé",
+                })     
+              }
+          }
+        }
         setIsLoading(false)
-    }
+      }
 
     useEffect(() => {
       const getProvinces = async() => {
@@ -89,9 +114,14 @@ import { IBlood, IProvince, IRank } from '@/types/typesParam'
         const { ranks, error } = await getAllRanks()
         ranks && setRanks(ranks as IRank[])
       }
-      getProvinces()
-      getBloods()
+      const getJobs = async() => {
+        const { jobs, error } = await getAllJobs()
+        jobs && setJobs(jobs as IJob[])
+      }
       getRanks()
+      getProvinces()
+      getJobs()
+      getBloods()
     }, [])
     
 
@@ -171,7 +201,7 @@ import { IBlood, IProvince, IRank } from '@/types/typesParam'
                   <SelectContent>
                     {
                       ranks.length > 0 && ranks.map((rank) => (
-                        <SelectItem key={ rank.id } value={ rank.id } className="hover:bg-primary-foreground hover:text-primary" >
+                        <SelectItem key={ rank.id } value={ rank.id.toString() } className="hover:bg-primary-foreground hover:text-primary" >
                           { rank.lib_fr }
                           {/* <div className='flex justify-between gap-16'>
                               { rank.id }
@@ -204,7 +234,23 @@ import { IBlood, IProvince, IRank } from '@/types/typesParam'
                   <FormLabel className="" >Emploi</FormLabel>
                 </div>
                 <FormControl>
-                  <Input type="text" className="" {...field} />
+                  {/* <Input type="text" className="" {...field} /> */}
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue className='text-primary' placeholder="Selectioner l'emploi de l'employée." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {
+                        jobs.length > 0 && jobs.map((job) => (
+                          <SelectItem key={ job.id } value={ job.id.toString() } className="hover:bg-primary-foreground hover:text-primary">
+                              {job.lib_fr}
+                          </SelectItem>
+                        ))
+                      }
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormDescription className="text-gray-400">
                   L'emploi d'employé.
@@ -403,10 +449,9 @@ import { IBlood, IProvince, IRank } from '@/types/typesParam'
                   </FormControl>
                   <SelectContent>
                     {
-                      provinces.map((province, index) => (
-                        <SelectItem key={index} value={province.id} className="hover:bg-primary-foreground hover:text-primary" >
+                      provinces.map((province) => (
+                        <SelectItem key={ province.id } value={ province.id.toString() } className="hover:bg-primary-foreground hover:text-primary" >
                           <div className='flex justify-between gap-16'>
-                              { province.code }
                               <span className='ml-2'>{ province.ar_name }</span>
                           </div>
                         </SelectItem>
@@ -571,6 +616,7 @@ import { IBlood, IProvince, IRank } from '@/types/typesParam'
                 <ProfileUploader
                   fieldChange={field.onChange}
                   mediaUrl={field.value?.toString() || ""}
+                  setFiles={setFiles}
                 />
               </FormControl>
               <FormDescription className="text-gray-400">
@@ -604,8 +650,8 @@ import { IBlood, IProvince, IRank } from '@/types/typesParam'
                   </FormControl>
                   <SelectContent>
                     {
-                      bloods.map((blood, index) => (
-                        <SelectItem key={index} value={blood.id} className="hover:bg-primary-foreground hover:text-primary" >
+                      bloods.map((blood) => (
+                        <SelectItem key={ blood.id } value={ blood.id.toString() } className="hover:bg-primary-foreground hover:text-primary" >
                           <div className='flex justify-between gap-16'>
                             {/* { blood.id } */}
                             <span className='ml-2'>{blood.lib_fr}</span>
