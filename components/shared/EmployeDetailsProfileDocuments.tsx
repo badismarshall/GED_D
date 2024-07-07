@@ -64,19 +64,19 @@ function EmployeDetailsProfileDocuments(
         //   return documents?.length ? Math.ceil(documents.length / pageSize) : 0;
         // }, [documents?.length, pageSize]);
         
-       function onSubmit(values: z.infer<typeof UploadEmployeeFilesValidation>) {
+       async function onSubmit(values: z.infer<typeof UploadEmployeeFilesValidation>) {
         // I don't Know why this is not working when using the api function (server action) 
         setIsLoading(true)
         try {
-          // const supabase = createClient()
-          // const { data, error } = await supabase.storage
-          //     .from('employeefiles')
-          //     .upload(`private/${employeeRegistrationNumber}/${Date.now()}_${values.file[0].name}`, values.file[0], {
-          //             cacheControl: '3600',
-          //             upsert: false
-          //     })
+          const supabase = createClient()
+          const { data, error } = await supabase.storage
+              .from('employeefiles')
+              .upload(`private/${employeeRegistrationNumber}/${Date.now()}_${values.file[0].name}`, values.file[0], {
+                      cacheControl: '3600',
+                      upsert: false
+              })
 
-          const upload  = useUploadEmployeeFile(values.file[0], employeeRegistrationNumber)
+          // const upload  = useUploadEmployeeFile(values.file[0], employeeRegistrationNumber)
           // if ((await upload).error) {
           //   console.log('Error uploading file in api: ')
           //   toast({

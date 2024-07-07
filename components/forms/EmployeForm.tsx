@@ -253,7 +253,7 @@ import { createClient } from '@/lib/supabase/client'
                   </Select>
                 </FormControl>
                 <FormDescription className="text-gray-400">
-                  L'emploi d&apos;employé.
+                  L&apos;emploi d&apos;employé.
                 </FormDescription>
                 <FormMessage className="" />
               </FormItem>
