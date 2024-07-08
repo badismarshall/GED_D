@@ -6,19 +6,22 @@ import { Upload, BadgeCheck } from 'lucide-react'
 import Image from 'next/image'
 
 type FileUploaderProps = {
-    fieldChange: (files : File[]) => void;
+    file: File[];
+    setFile: (files : File[]) => void;
+    setFileUrl: (url : string) => void;
+    fileUrl: string;
 }
 
-const FileUploader = ({fieldChange}: FileUploaderProps) => {
-        const [file, setFile] = useState<File[]>([]);
-        const [fileUrl, setFileUrl] = useState<string>('');
+const FileUploader = ({setFile, file, setFileUrl, fileUrl}: FileUploaderProps) => {
+        // const [file, setFile] = useState<File[]>([]);
+        // const [fileUrl, setFileUrl] = useState<string>('');
 
         const onDrop = useCallback((acceptedFiles : FileWithPath[]) => {
             setFile(acceptedFiles)
-            fieldChange(acceptedFiles)
+            // fieldChange(acceptedFiles)
             setFileUrl(URL.createObjectURL(acceptedFiles[0]))
-          }, [file]
-        )
+            console.log('file: ', fileUrl)
+          }, [file])
         // accept images 
         const {getRootProps, getInputProps} = useDropzone({
             onDrop, 
