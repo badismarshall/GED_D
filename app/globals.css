@@ -95,3 +95,8 @@
     @apply px-4;
   }
 }
+
+.portraituploader .filepond--root {
+	width:270px;
+	margin: 0 auto;
+}

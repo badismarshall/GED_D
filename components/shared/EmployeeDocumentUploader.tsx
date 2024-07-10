@@ -21,7 +21,7 @@ type EmployeeDocumentUploaderProps = {
     bucketPath: string;
     
 }
-function EmployeeDocumentUploader({ files, setFiles,bucketPath }: EmployeeDocumentUploaderProps) { {
+function EmployeeDocumentUploader({ files, setFiles, bucketPath }: EmployeeDocumentUploaderProps) { {
 
     const [access_token, setAccessToken] = useState('')
 

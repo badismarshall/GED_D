@@ -1,3 +1,4 @@
+import { FilePondFile } from "filepond"
 import * as z from "zod"
 
 export const MessageValidation = z.object({
@@ -26,7 +27,7 @@ export const MessageValidation = z.object({
       personalId: z.string(), /* Matricule civile */
       healthInsuranceNumber :  z.string(), /* we need maybe to format it */ /* Num d'assurence */
       sex: z.string().min(1, {message: "Ajouter le sexe"}).max(90), /* Masculin, Féminin */
-      portrait: z.custom<File[]>(), /* Une image d'employé */
+      portrait: z.custom<FilePondFile[]>(), /* Une image d'employé */
       blood: z.string().min(1, {message: "Ajouter le groupe sanguin"}).max(10) /* Groupe sanguin */ 
     }
   )

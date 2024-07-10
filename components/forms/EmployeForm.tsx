@@ -29,16 +29,19 @@ import { Calendar } from '../ui/calendar'
 import { CalendarIcon} from 'lucide-react'
 import { format, set } from 'date-fns'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import FileUploader from '../shared/FileUploader'
-import ProfileUploader from '../shared/ImageUploader'
+// import FileUploader from '../shared/FileUploader'
+// import ProfileUploader from '../shared/ImageUploader'
 import { useToast } from "@/components/ui/use-toast"
 import { addEmployee, getAllBloods, getAllJobs, getAllProvinces, getAllRanks } from '@/lib/supabase/api'
 import { Icons } from '../ui/icons'
 import { IBlood, IJob, IProvince, IRank } from '@/types/typesParam'
 import { createClient } from '@/lib/supabase/client'
+import EmployeePortraitUploader from '../shared/EmployeePortraitUploader'
+import { useUploadEmployeeFile } from '@/lib/react-query/quriesAndmutations'
 
  function EmployeForm () {
-  const [files, setFiles] = useState<File[]>([])
+  const initialStateFile: any[] = [];
+  const [files, setFiles] = useState(initialStateFile)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [provinces, setProvinces] = useState<IProvince[]>([])
   const [bloods, setBlood] = useState<IBlood[]>([])
@@ -51,8 +54,9 @@ import { createClient } from '@/lib/supabase/client'
     const form = useForm<z.infer<typeof EmployeValidation>>({
         resolver: zodResolver(EmployeValidation),
     })
-
-    // 2. Define a submit handler.
+      // const { mutateAsync: uploadEmployeeFile, isPending : isLoadingUpload } = useUploadEmployeeFile()
+    
+      // 2. Define a submit handler.
      async function onSubmit(values: z.infer<typeof EmployeValidation>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
@@ -123,7 +127,10 @@ import { createClient } from '@/lib/supabase/client'
       getJobs()
       getBloods()
     }, [])
-    
+
+    const updateFiles = (file: File) => {
+      setFiles([file])
+    };
 
   return (
     <Form {...form}>
@@ -403,6 +410,7 @@ import { createClient } from '@/lib/supabase/client'
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
+                   {/* !!!!!!!!! the  dateOfBridth is -1 day*/}
                   <Calendar
                     captionLayout='dropdown'
                     fromYear={1900}
@@ -605,18 +613,24 @@ import { createClient } from '@/lib/supabase/client'
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center">
-                {/* <img 
-                  src="/public/assets/icons/banner_title.png" 
-                  alt="title" 
-                   className="w-[30px] h-[30px] mr-2"
-                /> */}
+                {
+                  /* <img 
+                    src="/public/assets/icons/banner_title.png" 
+                    alt="title" 
+                    className="w-[30px] h-[30px] mr-2"
+                  /> */
+                }
                 <FormLabel className="" >Portrait</FormLabel>
               </div>
               <FormControl>
-                <ProfileUploader
+                {/* <ProfileUploader
                   fieldChange={field.onChange}
                   mediaUrl={field.value?.toString() || ""}
                   setFiles={setFiles}
+                /> */}
+                <EmployeePortraitUploader
+                  files={ files }
+                  onUpdateFiles={ updateFiles }
                 />
               </FormControl>
               <FormDescription className="text-gray-400">
